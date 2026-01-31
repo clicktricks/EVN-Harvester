@@ -35,7 +35,7 @@ How to use the extension:
 
         Open any station on bahn.expert.
 
-        Click the "🚀 SCAN STARTEN" (Lite) or "📊 PRO SCAN" (Pro) button.
+        Click the "🚀 SCAN STARTEN"  button.
 
         Wait for the scan to finish (watch the progress in the tab title).
 
