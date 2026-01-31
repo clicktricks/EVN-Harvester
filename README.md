@@ -47,7 +47,6 @@ LITE: Creates a clean, well-formatted HTML report.
 
 PRO: Creates the HTML report AND a CSV file (perfect for Excel/Google Sheets).
 
-<img width="1876" height="1004" alt="collecting example" src="https://github.com/user-attachments/assets/e3d678b3-c46c-483e-b55c-ad6edef21d4d" />
+<img width="1865" height="1000" alt="results" src="https://github.com/user-attachments/assets/68664484-1d64-44b1-a503-22ca4778cd90" />
 
-
-<img width="1865" height="982" alt="results example" src="https://github.com/user-attachments/assets/289f9814-a6bb-4c77-a732-8154474343a3" />
+<img width="1863" height="1000" alt="page for scan" src="https://github.com/user-attachments/assets/97d0a685-e110-465f-9160-989763d8ff59" />
