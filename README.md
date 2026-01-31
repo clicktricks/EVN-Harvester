@@ -24,8 +24,14 @@ How to use the extension:
         Install the Tampermonkey extension.
 
         Go to settings on bahn.expert and ensure EVN display is ACTIVE (blue toggle).
+        Also activate "Linie und Fahrtnummer" if you want it to be included.
+       
+        
+   <img width="513" height="878" alt="necessary settings" src="https://github.com/user-attachments/assets/dd9a466a-8993-4642-9124-76f82d14295b" />
 
-        Allow Popups for bahn.expert in your browser (needed for the file download).
+        
+
+        You might have to allow Popups for bahn.expert in your browser (needed for the file download).
 
   Installation:
 
