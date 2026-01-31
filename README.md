@@ -47,4 +47,5 @@ How to use the extension:
 <img width="1863" height="1000" alt="page for scan" src="https://github.com/user-attachments/assets/97d0a685-e110-465f-9160-989763d8ff59" />
 
 
-<img width="1865" height="1000" alt="results" src="https://github.com/user-attachments/assets/68664484-1d64-44b1-a503-22ca4778cd90" />
+<img width="1834" height="900" alt="results example" src="https://github.com/user-attachments/assets/1e8dc877-be7d-4a8a-a50c-45539a565e0a" />
+
