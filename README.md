@@ -41,11 +41,6 @@ How to use the extension:
 
         The files will download automatically once the scan reaches 100%.
 
-Versions:
-
-LITE: Creates a clean, well-formatted HTML report.
-
-PRO: Creates the HTML report AND a CSV file (perfect for Excel/Google Sheets).
 
 
 
