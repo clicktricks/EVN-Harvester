@@ -52,6 +52,5 @@ How to use the extension:
 
 <img width="1863" height="1000" alt="page for scan" src="https://github.com/user-attachments/assets/97d0a685-e110-465f-9160-989763d8ff59" />
 
-
-<img width="1834" height="900" alt="results example" src="https://github.com/user-attachments/assets/1e8dc877-be7d-4a8a-a50c-45539a565e0a" />
+<img width="1851" height="608" alt="results example" src="https://github.com/user-attachments/assets/dac356cb-ff9d-4dad-9067-c545b1fcaad4" />
 
