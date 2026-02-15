@@ -2,7 +2,7 @@
 // @name         Bahn.expert EVN Harvester - 16.7.Final-FIX
 // @version      16.7.FF
 // @description  Stabile Ziele (wie in Report_Report.html) + Korrekter Bahnhofsname.
-// @author       NiNi77
+// @author       clicktricks
 // @match        https://bahn.expert/*
 // @grant        none
 // ==/UserScript==
