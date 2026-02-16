@@ -13,9 +13,6 @@ EVN Collection: Extracts vehicle numbers for all train parts.
 
 Tab-Progress: Shows the current status (e.g., 7/98) directly in the browser tab title.
 
-Trip numbers are highlighted in red, and track numbers are also included. 
-
-   
 
 How to use the extension:
 
