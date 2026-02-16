@@ -35,7 +35,7 @@ How to use the extension:
 
   Installation:
 
-        Copy the code from evn-harvester-lite.user.js into a new Tampermonkey script.
+        Copy the code from evn-harvester.user.js into a new Tampermonkey script.
 
   Operation:
 
