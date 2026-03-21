@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         evn_harvester.user.js
-// @version      1.1
-// @description  neues Layout
+// @version      1.2
+// @description  abgestimmtes Desktoplayout
 // @author       clicktricks
 // @match        https://bahn.expert/*
 // @grant        none
@@ -12,12 +12,12 @@
 
     const btn = document.createElement('button');
     btn.id = 'evn-scan-btn';
-    btn.innerHTML = "🚀<br>SCAN STARTEN";
-    btn.style = `position:fixed;bottom:20px;right:20px;z-index:99999;width:110px;height:110px;
-                 border:4px solid white;border-radius:15px;font-weight:bold;color:white;
+    btn.innerHTML = "🚀<br>SCAN";
+    btn.style = `position:fixed;top:20px;right:280px;z-index:99999;width:110px;height:110px;
+                 border:2px solid white;border-radius:15px;font-weight:bold;color:white;
                  cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:flex;
                  flex-direction:column;justify-content:center;align-items:center;
-                 text-align:center;background:#003366;font-family:sans-serif;`;
+                 text-align:center;background:#1976d2;font-family:sans-serif;`;
     document.body.appendChild(btn);
 
     btn.onclick = async () => {
