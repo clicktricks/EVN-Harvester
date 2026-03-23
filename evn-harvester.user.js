@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         evn_harvester.user.js
-// @version      1.3
-// @description  added new Look and overlay during scanning
+// @version      1.5
+// @description  Scan-Overlay + Zentrales Popup + Button Reset
 // @author       clicktricks
 // @match        https://bahn.expert/*
 // @grant        none
@@ -12,10 +12,10 @@
 
     const btn = document.createElement('button');
     btn.id = 'evn-scan-btn';
-    btn.innerHTML = "<span style='font-size:25px;'>🔍</span><br>SCAN";
-    btn.style = `position:fixed;top:20px;right:50px;z-index:99999;width:55px;height:55px;
+    btn.innerHTML = "<span style='font-size:22px;'>🔍</span><br>SCAN";
+    btn.style = `position:fixed;top:25px;right:50px;z-index:99999;width:55px;height:55px;
                  border:3px solid #3d2273;border-radius:10px;font-weight:bold;color:white;
-                 cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:flex;
+                 cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.8);display:flex;
                  flex-direction:column;justify-content:center;align-items:center;
                  text-align:center;background:#1976d2;font-family:sans-serif;font-size:15px;`;
     document.body.appendChild(btn);
@@ -26,31 +26,24 @@
         if (containers.length === 0) return alert("Keine Abfahrten gefunden!");
 
         btn.disabled = true;
-        // Overlay erstellen
-const overlay = document.createElement('div');
-overlay.style = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.95); /* 100% Schwarz */
-    z-index: 99998; /* Direkt unter dem Button */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 32px;
-    align-items: center;
-    color: #0e3069;
-    font-family: sans-serif;
-    font-size: 24px;
-    pointer-events: none; /* Klicks gehen durch das Overlay an die Seite */
-`;
-overlay.innerHTML = "Scan läuft ⟶";
-document.body.appendChild(overlay);
+
+        // --- Overlay erstellen ---
+        const overlay = document.createElement('div');
+        overlay.style = `
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.95); z-index: 99998;
+            display: flex; flex-direction: column; justify-content: flex-start;
+            padding-top: 32px; align-items: center;
+            color: #a5b7c9; font-family: sans-serif; font-size: 24px;
+            pointer-events: none;
+        `;
+        overlay.innerHTML = "Scan läuft ⟶";
+        document.body.appendChild(overlay);
+
         let reportData = [];
         const startTime = new Date();
 
+        // --- Scan-Schleife ---
         for (let i = 0; i < containers.length; i++) {
             const container = containers[i];
             btn.innerHTML = `⏳<br>${i+1}/${containers.length}`;
@@ -84,58 +77,70 @@ document.body.appendChild(overlay);
             container.click();
             await new Promise(r => setTimeout(r, 200));
         }
-        if (typeof overlay !== 'undefined' && overlay !== null) {
-            overlay.remove();
-        }
+
+        // --- Abschluss-Aktionen ---
+
+        // 1. Overlay weg
+        if (overlay) overlay.remove();
+
+        // 2. Button zurück auf Anfang
         btn.disabled = false;
-        btn.style.background = "#004d00";
-        btn.innerHTML = `<div style="font-size:2rem;">✔</div><div style="font-size:0.85rem;">FERTIG</div>`;
+        btn.style.background = "#1976d2";
+        btn.innerHTML = "<span style='font-size:25px;'>🔍</span><br>SCAN";
+
+        // 3. Separates Popup anzeigen
+        const popup = document.createElement('div');
+        popup.innerHTML = "<b>SCAN FERTIG ✔</b><br><span style='font-size:12px;'>Report wurde erstellt</span>";
+        popup.style = `
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background:#0b3b20; color: white #9bb2c9; padding: 12px 25px;
+            border-radius: 4px; font-family: sans-serif; font-size: 16px;
+            z-index: 100000; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            text-align: center; border: 1px solid white;
+        `;
+        document.body.appendChild(popup);
+
+        // Popup nach 3 Sek ausblenden
+        setTimeout(() => {
+            popup.style.opacity = "0";
+            popup.style.transition = "opacity 0.5s ease";
+            setTimeout(() => popup.remove(), 500);
+        }, 3000);
+
+        // 4. Download
         exportHTML(stationName, startTime, reportData);
     };
 
     function exportHTML(station, dateObj, data) {
-        // --- NEU: DATUM UND ZEIT FORMATIEREN ---
         const day = String(dateObj.getDate()).padStart(2, '0');
         const month = String(dateObj.getMonth() + 1).padStart(2, '0');
         const year = dateObj.getFullYear();
         const hours = String(dateObj.getHours()).padStart(2, '0');
         const mins = String(dateObj.getMinutes()).padStart(2, '0');
-        // Erzeugt Format: DD-MM-YYYY_HH-mm
         const timeStamp = `${day}-${month}-${year}_${hours}-${mins}`;
 
         let html = `<html><head><meta charset="UTF-8"><style>
             body { font-family: sans-serif; padding: 20px; }
             .header { background: #2b70b5; color: white; padding: 15px; border-radius: 4px; margin-bottom: 20px; font-weight: bold; }
             .header h1 { font-size: 1.9rem; margin: 0; }
-            .header p { font-size: 1.5rem; margin: 5px 0 0 0; }
             table { width: 100%; border-collapse: collapse; }
             th, td { border: 1px solid #ccc; padding: 10px; vertical-align: middle; }
-            th { background: #f2f2f2; color: #003366; text-transform: uppercase; font-size: 1.5rem; }
-            .train-nr { color: #040b21; font-weight: bold; font-size: 1.3rem; margin-top: 4px; }
-            .info-cell { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-            .left-group { display: flex; align-items: center; gap: 15px; }
-            .big-clip-btn {
-                display: flex; align-items: center; justify-content: center; text-decoration: none;
-                font-size: 1.8rem; background: #f0f4f8; border: 2px solid #003366;
-                border-radius: 8px; width: 60px; height: 50px; color: #003366;
-                box-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin-right: 30px;
-            }
-            .big-clip-btn:hover { background: #97b8c4; }
-            .evn { background: #eeeeee; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-weight: bold; border: 1px solid #ccc; font-size: 1.3rem; margin: 0 6px; }
-            .track-box { background:#006666; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 1.2rem; white-space: nowrap; }
+            th { background: #f2f2f2; color: #003366; text-transform: uppercase; }
+            .evn { background: #eeeeee; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-weight: bold; border: 1px solid #ccc; margin: 0 3px; }
+            .track-box { background:#006666; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; }
         </style></head><body>
         <div class="header"><h1>🚉 REPORT: ${station}</h1><p>${dateObj.toLocaleString('de-DE')}</p></div>
-        <table><thead><tr><th>Zeit</th><th>Zug / Nr</th><th>Ziel</th><th>Link | EVNs | Gleis</th></tr></thead><tbody>`;
+        <table><thead><tr><th>Zeit</th><th>Zug / Nr</th><th>Ziel</th><th>Info</th></tr></thead><tbody>`;
 
         data.forEach(item => {
             const evnsHtml = item.evns.map(e => `<span class="evn">${e}</span>`).join(" ");
             const trackHtml = item.track ? `<span class="track-box">Gl. ${item.track}</span>` : "";
-            const clipHtml = item.link ? `<a href="${item.link}" target="_blank" class="big-clip-btn">📎</a>` : "";
+            const clipHtml = item.link ? `<a href="${item.link}" target="_blank" style="text-decoration:none; font-size:1.5rem;">📎</a>` : "";
             html += `<tr>
-                <td style="font-size:1.4rem;"><b>${item.time}</b></td>
-                <td><b style="font-size:1.3rem;">${item.train}</b><br><div class="train-nr">${item.nr}</div></td>
-                <td style="font-size:1.4rem;"><b>${item.dest}</b></td>
-                <td><div class="info-cell"><div class="left-group">${clipHtml} <div style="display:flex; flex-wrap:wrap; gap:5px;">${evnsHtml}</div></div>${trackHtml}</div></td>
+                <td><b>${item.time}</b></td>
+                <td><b>${item.train}</b><br><small>${item.nr}</small></td>
+                <td><b>${item.dest}</b></td>
+                <td><div style="display:flex; align-items:center; gap:10px;">${clipHtml} ${evnsHtml} ${trackHtml}</div></td>
             </tr>`;
         });
         html += `</tbody></table></body></html>`;
@@ -143,7 +148,6 @@ document.body.appendChild(overlay);
         const blob = new Blob([html], { type: 'text/html' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        // --- GEÄNDERT: Zeitstempel im Dateinamen ---
         a.download = `EVN_Report_${station.replace(/[^a-z0-9]/gi, '_')}_${timeStamp}.html`;
         a.click();
     }
