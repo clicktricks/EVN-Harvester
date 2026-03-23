@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         evn_harvester.user.js
 // @version      1.3
-// @description  added new Look and overlay during scanning 
+// @description  added new Look and overlay during scanning
 // @author       clicktricks
 // @match        https://bahn.expert/*
 // @grant        none
@@ -12,12 +12,12 @@
 
     const btn = document.createElement('button');
     btn.id = 'evn-scan-btn';
-    btn.innerHTML = "<span style='font-size:40px;'>🔍</span><br>SCAN";
-    btn.style = `position:fixed;top:20px;right:280px;z-index:99999;width:110px;height:110px;
-                 border:3px solid #3d2273;border-radius:18px;font-weight:bold;color:white;
+    btn.innerHTML = "<span style='font-size:25px;'>🔍</span><br>SCAN";
+    btn.style = `position:fixed;top:20px;right:50px;z-index:99999;width:55px;height:55px;
+                 border:3px solid #3d2273;border-radius:10px;font-weight:bold;color:white;
                  cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:flex;
                  flex-direction:column;justify-content:center;align-items:center;
-                 text-align:center;background:#1976d2;font-family:sans-serif;font-size:20px;`;
+                 text-align:center;background:#1976d2;font-family:sans-serif;font-size:15px;`;
     document.body.appendChild(btn);
 
     btn.onclick = async () => {
@@ -39,11 +39,11 @@ overlay.style = `
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding-top: 50px;
+    padding-top: 32px;
     align-items: center;
     color: #0e3069;
     font-family: sans-serif;
-    font-size: 39px;
+    font-size: 24px;
     pointer-events: none; /* Klicks gehen durch das Overlay an die Seite */
 `;
 overlay.innerHTML = "Scan läuft ⟶";
