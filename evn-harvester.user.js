@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         evn_harvester.user.js
-// @version      1.2
-// @description  abgestimmtes Desktoplayout
+// @version      1.3
+// @description  added new Look and overlay during scanning 
 // @author       clicktricks
 // @match        https://bahn.expert/*
 // @grant        none
@@ -12,12 +12,12 @@
 
     const btn = document.createElement('button');
     btn.id = 'evn-scan-btn';
-    btn.innerHTML = "🚀<br>SCAN";
+    btn.innerHTML = "<span style='font-size:40px;'>🔍</span><br>SCAN";
     btn.style = `position:fixed;top:20px;right:280px;z-index:99999;width:110px;height:110px;
-                 border:2px solid white;border-radius:15px;font-weight:bold;color:white;
+                 border:3px solid #3d2273;border-radius:18px;font-weight:bold;color:white;
                  cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:flex;
                  flex-direction:column;justify-content:center;align-items:center;
-                 text-align:center;background:#1976d2;font-family:sans-serif;`;
+                 text-align:center;background:#1976d2;font-family:sans-serif;font-size:20px;`;
     document.body.appendChild(btn);
 
     btn.onclick = async () => {
@@ -26,6 +26,28 @@
         if (containers.length === 0) return alert("Keine Abfahrten gefunden!");
 
         btn.disabled = true;
+        // Overlay erstellen
+const overlay = document.createElement('div');
+overlay.style = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95); /* 100% Schwarz */
+    z-index: 99998; /* Direkt unter dem Button */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 50px;
+    align-items: center;
+    color: #0e3069;
+    font-family: sans-serif;
+    font-size: 39px;
+    pointer-events: none; /* Klicks gehen durch das Overlay an die Seite */
+`;
+overlay.innerHTML = "Scan läuft ⟶";
+document.body.appendChild(overlay);
         let reportData = [];
         const startTime = new Date();
 
@@ -62,7 +84,9 @@
             container.click();
             await new Promise(r => setTimeout(r, 200));
         }
-
+        if (typeof overlay !== 'undefined' && overlay !== null) {
+            overlay.remove();
+        }
         btn.disabled = false;
         btn.style.background = "#004d00";
         btn.innerHTML = `<div style="font-size:2rem;">✔</div><div style="font-size:0.85rem;">FERTIG</div>`;
