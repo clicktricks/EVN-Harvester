@@ -75,7 +75,7 @@
             reportData.push({ time, train: trainFull, nr: displayNr, link: detailLink, dest: destination, evns: [...new Set(matches)], track: track });
 
             container.click();
-            await new Promise(r => setTimeout(r, 175));
+            await new Promise(r => setTimeout(r, 2000));
         }
 
         // --- Abschluss-Aktionen ---
