@@ -1,4 +1,4 @@
-// ==UserScript==
+⁸// ==UserScript==
 // @name         evn_harvester.user.js
 // @version      1.5
 // @description  Scan-Overlay + Zentrales Popup + Button Reset
@@ -75,7 +75,7 @@
             reportData.push({ time, train: trainFull, nr: displayNr, link: detailLink, dest: destination, evns: [...new Set(matches)], track: track });
 
             container.click();
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 175));
         }
 
         // --- Abschluss-Aktionen ---
