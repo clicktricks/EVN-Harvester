@@ -1,4 +1,4 @@
-⁸// ==UserScript==
+// ==UserScript==
 // @name         evn_harvester.user.js
 // @version      1.5
 // @description  Scan-Overlay + Zentrales Popup + Button Reset
