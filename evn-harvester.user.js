@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         evn_harvester.user.js
-// @version      1.5
+// @version      1.6
 // @description  Scan-Overlay + Zentrales Popup + Button Reset
 // @author       clicktricks
 // @match        https://bahn.expert/*
@@ -13,7 +13,7 @@
     const btn = document.createElement('button');
     btn.id = 'evn-scan-btn';
     btn.innerHTML = "<span style='font-size:22px;'>🔍</span><br>SCAN";
-    btn.style = `position:fixed;top:25px;right:50px;z-index:99999;width:55px;height:55px;
+    btn.style = `position:fixed;top:15px;right:75px;z-index:99999;width:55px;height:55px;
                  border:3px solid #3d2273;border-radius:10px;font-weight:bold;color:white;
                  cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.8);display:flex;
                  flex-direction:column;justify-content:center;align-items:center;
@@ -72,10 +72,13 @@
             let matches = container.innerHTML.match(/\d{4}\s\d{3}/g) || [];
             let track = lines.find(l => l.toLowerCase().includes("gleis") || /^\d+$/.test(l))?.replace(/Gleis /gi, "") || "";
 
-            reportData.push({ time, train: trainFull, nr: displayNr, link: detailLink, dest: destination, evns: [...new Set(matches)], track: track });
+            // TZ-Nummer direkt aus trainFull extrahieren z.B. "ICE 275" -> "275"
+            const tzNr = (trainFull.match(/\d+/) || [""])[0];
+
+            reportData.push({ time, train: trainFull, nr: displayNr, link: detailLink, dest: destination, evns: [...new Set(matches)], track: track, tz: tzNr });
 
             container.click();
-            await new Promise(r => setTimeout(r, 2000));
+            await new Promise(r => setTimeout(r, 200));
         }
 
         // --- Abschluss-Aktionen ---
@@ -100,12 +103,12 @@
         `;
         document.body.appendChild(popup);
 
-        // Popup nach 3 Sek ausblenden
+        // Popup nach 4 Sek ausblenden
         setTimeout(() => {
             popup.style.opacity = "0";
             popup.style.transition = "opacity 0.5s ease";
             setTimeout(() => popup.remove(), 500);
-        }, 3000);
+        }, 4000);
 
         // 4. Download
         exportHTML(stationName, startTime, reportData);
@@ -127,25 +130,34 @@
             th, td { border: 1px solid #ccc; padding: 10px; vertical-align: middle; }
             th { background: #f2f2f2; color: #003366; text-transform: uppercase; }
             .evn { background: #eeeeee; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-weight: bold; border: 1px solid #ccc; margin: 0 3px; }
-            .track-box { background:#006666; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; }
+            .clip-box { background: #624887; border: 2px solid #ccc; border-radius: 6px; padding: 4px 8px; text-decoration: none; font-size: 1.5rem; }
+            .track-box {background:#006666; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; }
+            .tz-box { background:#9eb5af; color: #010a1c; padding: 6px 12px; border-radius: 4px; font-family: monospace; font-weight: bold; font-size: 1.1rem; letter-spacing: 1px; }
+
         </style></head><body>
-        <div class="header"><h1>🚉 REPORT: ${station}</h1><p>${dateObj.toLocaleString('de-DE')}</p></div>
-        <table><thead><tr><th>Zeit</th><th>Zug / Nr</th><th>Ziel</th><th>Info</th></tr></thead><tbody>`;
+        <div class="header"><h1>&#x1F689; REPORT: ${station}</h1><p>${dateObj.toLocaleString('de-DE')}</p></div>
+        <table><thead><tr><th>Zeit</th><th>Zug / Nr</th><th>Ziel</th><th>Waggons</th><th style="width:40px;">LINKS</th><th>Gl.</th><th>TZ</th></tr></thead><tbody>`;
 
         data.forEach(item => {
             const evnsHtml = item.evns.map(e => `<span class="evn">${e}</span>`).join(" ");
-            const trackHtml = item.track ? `<span class="track-box">Gl. ${item.track}</span>` : "";
-            const clipHtml = item.link ? `<a href="${item.link}" target="_blank" style="text-decoration:none; font-size:1.5rem;">📎</a>` : "";
+            const trackHtml = item.track ? `<span class="track-box">${item.track}</span>` : `<span style="color:#aaa;">–</span>`;
+            const clipHtml = item.link
+                ? `<a href="${item.link}" target="_blank" class="clip-box">&#x1F517;</a>`
+                : `<span style="color:#aaa;">–</span>`;
+            const tzHtml = item.tz ? `<span class="tz-box">${item.tz}</span>` : `<span style="color:#aaa;">–</span>`;
             html += `<tr>
                 <td><b>${item.time}</b></td>
                 <td><b>${item.train}</b><br><small>${item.nr}</small></td>
                 <td><b>${item.dest}</b></td>
-                <td><div style="display:flex; align-items:center; gap:10px;">${clipHtml} ${evnsHtml} ${trackHtml}</div></td>
+                <td>${evnsHtml}</td>
+                <td style="text-align:center;">${clipHtml}</td>
+                <td style="text-align:center;">${trackHtml}</td>
+                <td style="text-align:center;">${tzHtml}</td>
             </tr>`;
         });
         html += `</tbody></table></body></html>`;
 
-        const blob = new Blob([html], { type: 'text/html' });
+        const blob = new Blob(['\uFEFF' + html], { type: 'text/html;charset=utf-8' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = `EVN_Report_${station.replace(/[^a-z0-9]/gi, '_')}_${timeStamp}.html`;
