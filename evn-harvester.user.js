@@ -143,7 +143,7 @@
             .clip-box { background: #624887; border: 2px solid #ccc; border-radius: 6px; padding: 4px 8px; text-decoration: none; font-size: 1.5rem; }
             .track-box { background:#006666; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; }
             .tz-box { background:#9eb5af; color: #010a1c; padding: 6px 12px; border-radius: 4px; font-family: monospace; font-weight: bold; font-size: 1.1rem; letter-spacing: 1px; }
-            #filterbar { position: sticky; top: 0; z-index: 999; background: #1e2a3a; padding: 10px 16px;
+            #filterbar { position: sticky; top: 0; z-index: 999; background: #0d2d4d; padding: 10px 16px;
                 display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.4); margin-bottom: 16px; }
             #filterbar input { padding: 7px 12px; border-radius: 6px; border: none;
