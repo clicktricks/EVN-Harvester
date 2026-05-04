@@ -260,7 +260,7 @@
                         var matched = searches.filter(function(s) { return text.includes(s); });
                         if (matched.length > 0) {
                             row.style.display = '';
-                            row.style.background = matched.length >= 2 ? '#5fa16' : '#5a8a5c';
+                            row.style.background = matched.length >= 2 ? '#b6dbbc' : '#b6dbbc';
                             visible++;
                         } else {
                             row.style.display = hideNoMatch ? 'none' : '';
