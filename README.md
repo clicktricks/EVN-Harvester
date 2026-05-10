@@ -48,12 +48,11 @@ How to use the extension:
 
 
 
+<img width="1917" height="411" alt="screen03" src="https://github.com/user-attachments/assets/b8df3df2-e0f2-4276-8657-17f97065ba6f" />
 
 
-<img width="1863" height="1000" alt="page for scan" src="https://github.com/user-attachments/assets/97d0a685-e110-465f-9160-989763d8ff59" />
-
-
-
+#
+#
 
 <img width="1901" height="848" alt="screen02" src="https://github.com/user-attachments/assets/5672bf71-2d48-466b-8b9a-f7de1636bef7" />
 
