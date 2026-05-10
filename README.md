@@ -45,13 +45,13 @@ How to use the extension:
         Wait for the scan to finish. The window will turn black during the process.
         
         The file will be available for download once it's finished.
-
+#
 
 <img width="1917" height="411" alt="screen03" src="https://github.com/user-attachments/assets/b8df3df2-e0f2-4276-8657-17f97065ba6f" />
 
 
 #
-#
+
 
 <img width="1901" height="848" alt="screen02" src="https://github.com/user-attachments/assets/5672bf71-2d48-466b-8b9a-f7de1636bef7" />
 
