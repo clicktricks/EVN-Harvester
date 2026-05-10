@@ -5,6 +5,8 @@ Take a look at the images below for a first impression.
 It has been tested with Firefox 147.02 .Works with all modern browsers supporting Tampermonkey on desktop and mobile devices.
 
 
+I recently added a searchbar.
+
 What it does:
 
 Automatic Scanning: Clicks through all departures and collects data.
