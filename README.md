@@ -40,12 +40,11 @@ How to use the extension:
 
         Open any station on bahn.expert.
 
-        Click the "🚀 SCAN STARTEN"  button.
+        Click the "SCAN"  button.
 
-        Wait for the scan to finish (watch the progress in the tab title).
-
-        The files will download automatically once the scan reaches 100%.
-
+        Wait for the scan to finish. The window will turn black during the process.
+        
+        The file will be available for download once it's finished.
 
 
 <img width="1917" height="411" alt="screen03" src="https://github.com/user-attachments/assets/b8df3df2-e0f2-4276-8657-17f97065ba6f" />
