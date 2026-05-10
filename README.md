@@ -49,7 +49,12 @@ How to use the extension:
 
 
 
+
 <img width="1863" height="1000" alt="page for scan" src="https://github.com/user-attachments/assets/97d0a685-e110-465f-9160-989763d8ff59" />
 
-<img width="1851" height="608" alt="results example" src="https://github.com/user-attachments/assets/dac356cb-ff9d-4dad-9067-c545b1fcaad4" />
+
+
+
+<img width="1901" height="848" alt="screen02" src="https://github.com/user-attachments/assets/5672bf71-2d48-466b-8b9a-f7de1636bef7" />
+
 
