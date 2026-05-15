@@ -23,7 +23,8 @@
     btn.onclick = async () => {
         let stationName = document.title.split('|')[0].split('–')[0].trim();
 
-        const containers = Array.from(document.querySelectorAll('div.MuiPaper-root'));
+        const containers = Array.from(document.querySelectorAll('div.MuiPaper-root'))
+            .filter(el => el.querySelector('a[data-testid="detailsLink"]'));
         if (containers.length === 0) return alert("Keine Abfahrten gefunden!");
 
         btn.disabled = true;
