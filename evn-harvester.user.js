@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         evn_harvester.user.js
-// @version      1.6
-// @description  Scan-Overlay + Zentrales Popup + Button Reset
+// @version      2.1
+// @description  MUI Update - Scan-Overlay + Zentrales Popup + Button Reset
 // @author       clicktricks
 // @match        https://bahn.expert/*
 // @grant        none
@@ -22,7 +22,8 @@
 
     btn.onclick = async () => {
         let stationName = document.title.split('|')[0].split('–')[0].trim();
-        const containers = Array.from(document.querySelectorAll('div[id$="container"]'));
+
+        const containers = Array.from(document.querySelectorAll('div.MuiPaper-root'));
         if (containers.length === 0) return alert("Keine Abfahrten gefunden!");
 
         btn.disabled = true;
@@ -48,46 +49,66 @@
             const container = containers[i];
             btn.innerHTML = `⏳<br>${i+1}/${containers.length}`;
 
-            const lines = container.innerText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            const time = lines.find(l => /\d{2}:\d{2}/.test(l)) || "--:--";
-            const trainFull = container.querySelector('span[class*="train"]')?.innerText || lines[0];
+            try {
+                // Zeit
+                const timeElements = container.querySelectorAll('.css-1u8qly9');
+                let time = "--:--";
+                if (timeElements.length > 0) {
+                    const match = timeElements[0].innerText.match(/(\d{2}):(\d{2})/);
+                    if (match) time = match[0];
+                }
 
-            let trainNrMatch = lines.find(l => /^[A-Z]?\s?\d{4,5}$/.test(l) || (l.includes(' ') && /\d+/.test(l) && l.length < 12 && l !== trainFull));
-            let displayNr = trainNrMatch || "";
-            let detailLink = container.querySelector('a[href*="/details/"]')?.href || "";
+                // Zugnummer + Link
+                const detailAnchor = container.querySelector('a[data-testid="detailsLink"]');
+                let trainDisplay = detailAnchor?.innerText?.trim() || "?";
+                let detailHref = detailAnchor?.href || "";
 
-            let destination = "";
-            let destElements = Array.from(container.querySelectorAll('[class*="destination"]'));
-            if (destElements.length > 0) {
-                destination = destElements[destElements.length - 1].innerText;
-            } else {
-                let pot = lines.filter(l => l.length > 3 && !/\d{2}:\d{2}/.test(l) && l !== trainFull);
-                destination = pot.length > 0 ? pot[pot.length - 1] : "Ziel";
+                // Linie
+                const trainFullElement = container.querySelector('.css-1kw7u7o');
+                let trainFull = trainFullElement?.innerText?.trim() || trainDisplay;
+
+                // Ziel
+                const destElement = container.querySelector('.css-b2nyxf');
+                let destination = destElement?.innerText?.trim() || "Ziel";
+
+                // Aufklappen
+                container.scrollIntoView({ block: "center" });
+                container.click();
+                await new Promise(r => setTimeout(r, 1400));
+
+                // EVNs
+                let evns = [];
+                const waggonElements = container.querySelectorAll('.css-760knn span');
+                waggonElements.forEach(el => {
+                    const text = el.innerText.trim();
+                    if (/\d{4}\s\d{3}/.test(text)) evns.push(text);
+                });
+                evns = [...new Set(evns)];
+
+                // Gleis
+                let track = "";
+                const glMatch = container.innerText.match(/Gl[eis]*\.?\s*(\d+)/i);
+                if (glMatch) track = glMatch[1];
+
+                // TZ: document-weit nach WRSheets-Link suchen
+                // (wird außerhalb des containers gerendert)
+                let tz = "";
+                const allPdfLinks = Array.from(document.querySelectorAll('a[href*="WRSheets"]'));
+                if (allPdfLinks.length > 0) {
+                    const pdfLink = allPdfLinks[allPdfLinks.length - 1];
+                    const tzSpan = pdfLink.parentElement?.querySelector('span');
+                    const tzRaw = tzSpan?.innerText.trim() || "";
+                    if (/[A-Z]+[0-9]+/.test(tzRaw)) tz = tzRaw.replace(/[^0-9]/g, '');
+                }
+
+                reportData.push({ time, train: trainFull, nr: trainDisplay, link: detailHref, dest: destination, evns, track, tz });
+
+                container.click();
+                await new Promise(r => setTimeout(r, 200));
+
+            } catch (e) {
+                console.error("Error processing container", i, e);
             }
-
-            container.scrollIntoView({ block: "center" });
-            container.click();
-            await new Promise(r => setTimeout(r, 1400));
-
-            let matches = container.innerHTML.match(/\d{4}\s\d{3}/g) || [];
-            let track = lines.find(l => l.toLowerCase().includes("gleis") || /^\d+$/.test(l))?.replace(/Gleis /gi, "") || "";
-
-            // Echte TZ: steht als <span>ICE9480</span> neben dem WRSheets-PDF-Link
-            // Dieser Block wird ausserhalb des containers gerendert -> document-weite Suche
-            let tzNr = "";
-            const allPdfLinks = Array.from(document.querySelectorAll('a[href*="WRSheets"]'));
-            if (allPdfLinks.length > 0) {
-                // Nehme den zuletzt sichtbaren (= aktuell aufgeklappten)
-                const pdfLink = allPdfLinks[allPdfLinks.length - 1];
-                const tzSpan = pdfLink.parentElement?.querySelector('span');
-                const tzRaw = tzSpan?.innerText.trim() || "";
-                if (/[A-Z]+[0-9]+/.test(tzRaw)) tzNr = tzRaw.replace(/[^0-9]/g, '');
-            }
-
-            reportData.push({ time, train: trainFull, nr: displayNr, link: detailLink, dest: destination, evns: [...new Set(matches)], track: track, tz: tzNr });
-
-            container.click();
-            await new Promise(r => setTimeout(r, 200));
         }
 
         // --- Abschluss-Aktionen ---
@@ -100,19 +121,18 @@
         btn.style.background = "#1976d2";
         btn.innerHTML = "<span style='font-size:25px;'>🔍</span><br>SCAN";
 
-        // 3. Separates Popup anzeigen
+        // 3. Popup
         const popup = document.createElement('div');
         popup.innerHTML = "<b>SCAN FERTIG ✔</b><br><span style='font-size:12px;'>Report wurde erstellt</span>";
         popup.style = `
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background:#0b3b20; color: white #9bb2c9; padding: 12px 25px;
+            background:#0b3b20; color: white; padding: 12px 25px;
             border-radius: 4px; font-family: sans-serif; font-size: 16px;
             z-index: 100000; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             text-align: center; border: 1px solid white;
         `;
         document.body.appendChild(popup);
 
-        // Popup nach 4 Sek ausblenden
         setTimeout(() => {
             popup.style.opacity = "0";
             popup.style.transition = "opacity 0.5s ease";
@@ -163,7 +183,7 @@
                 onkeydown="if(event.key==='Enter') addSearch()" />
             <button onclick="addSearch()" style="background:#1976d2;">+ Suche</button>
             <button id="btnToggle" onclick="toggleHide()" style="background:#555;">&#x1F453; Nur Treffer anzeigen</button>
-            <button onclick="resetAll()" style="background:#7b2020;">&#x2715; Zurücksetzen</button>
+            <button onclick="resetAll()" style="background:#7b2020;">&#x2715; Zur&uuml;cksetzen</button>
             <span id="counter"></span>
         </div>
 
@@ -215,7 +235,7 @@
                 searches = [];
                 hideNoMatch = false;
                 var btn = document.getElementById('btnToggle');
-                btn.textContent = '\u{1F453} Nur Treffer anzeigen';
+                btn.innerHTML = '&#x1F453; Nur Treffer anzeigen';
                 btn.style.background = '#555';
                 renderChips();
                 applyFilter();
@@ -224,7 +244,7 @@
             function toggleHide() {
                 hideNoMatch = !hideNoMatch;
                 var btn = document.getElementById('btnToggle');
-                btn.innerHTML = hideNoMatch ? '\u{1F441} Alle anzeigen' : '\u{1F453} Nur Treffer anzeigen';
+                btn.innerHTML = hideNoMatch ? '&#x1F441; Alle anzeigen' : '&#x1F453; Nur Treffer anzeigen';
                 btn.style.background = hideNoMatch ? '#1976d2' : '#555';
                 applyFilter();
             }
@@ -260,7 +280,7 @@
                         var matched = searches.filter(function(s) { return text.includes(s); });
                         if (matched.length > 0) {
                             row.style.display = '';
-                            row.style.background = matched.length >= 2 ? '#b6dbbc' : '#b6dbbc';
+                            row.style.background = '#b6dbbc';
                             visible++;
                         } else {
                             row.style.display = hideNoMatch ? 'none' : '';
@@ -268,7 +288,7 @@
                         }
                     }
                 });
-                document.getElementById('counter').textContent = visible + ' / ' + total + ' Züge';
+                document.getElementById('counter').textContent = visible + ' / ' + total + ' Z\u00FCge';
             }
 
             applyFilter();
