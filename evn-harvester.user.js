@@ -85,10 +85,13 @@
                 });
                 evns = [...new Set(evns)];
 
-                // Gleis
+                // Gleis: letztes .css-1u8qly9 Element (erste sind Zeiten, letztes ist Gleis)
                 let track = "";
-                const glMatch = container.innerText.match(/Gl[eis]*\.?\s*(\d+)/i);
-                if (glMatch) track = glMatch[1];
+                const timeGleisEls = Array.from(container.querySelectorAll('.css-1u8qly9'));
+                if (timeGleisEls.length > 1) {
+                    const last = timeGleisEls[timeGleisEls.length - 1].innerText.trim();
+                    if (/^\d+$/.test(last)) track = last;
+                }
 
                 // TZ: document-weit nach WRSheets-Link suchen
                 // (wird außerhalb des containers gerendert)
