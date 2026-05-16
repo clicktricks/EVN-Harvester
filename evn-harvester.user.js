@@ -203,7 +203,7 @@
             const tzHtml = item.tz ? `<span class="tz-box">${item.tz}</span>` : `<span style="color:#aaa;">–</span>`;
             html += `<tr>
                 <td><b>${item.time}</b></td>
-                <td><b>${item.train}</b><br><small>${item.nr}</small></td>
+                <td><b>${item.nr}</b><br><small>${item.train}</small></td>
                 <td><b>${item.dest}</b></td>
                 <td>${evnsHtml}</td>
                 <td style="text-align:center;">${clipHtml}</td>
