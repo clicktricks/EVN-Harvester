@@ -1,8 +1,6 @@
 
-# EVN-Harvester 
-Please Note:
+# EVN-Harvester                                
 
-bahn.expert has been updated a couple of months ago. The previous version no longer works. Updating to this version of the script will fix the problem!
 
 EVN-Harvester is a userscript for the webpage bahn.expert, that can be used with Tampermonkey. EVN Harvester collects details from timetables at bahn.expert and creates a list from the found data.
 Take a look at the images below for a first impression. 
@@ -52,6 +50,10 @@ How to use the extension:
 #
 
 <img width="1917" height="411" alt="screen03" src="https://github.com/user-attachments/assets/b8df3df2-e0f2-4276-8657-17f97065ba6f" />
+
+
+<img width="750" height="188" alt="disc" src="https://github.com/user-attachments/assets/24e764cd-360d-4682-bba3-cc19ca6fe652" />
+
 
 
 #
