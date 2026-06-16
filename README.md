@@ -4,7 +4,17 @@
 
 EVN-Harvester is a userscript for the webpage bahn.expert, that can be used with Tampermonkey. EVN Harvester collects details from timetables at bahn.expert and creates a list from the found data.
 Take a look at the images below for a first impression. 
-It has been tested with Firefox 147.02 .Works with all modern browsers supporting Tampermonkey on desktop and mobile devices.
+It has been tested with Firefox 147.02. Works with all modern browsers supporting Tampermonkey on desktop and mobile devices.
+
+How to install:
+
+    Add the tampermonkey extension to a browser that supports it.
+
+You can get it at: https://www.tampermonkey.net/
+
+    Create a new userscript. Add the content of the file EVN-Finder.user.js.
+
+    Ensure that the settting for displaying EVN is enabled
 
 
 I recently added a searchbar.
