@@ -73,7 +73,8 @@ How to use the extension:
 
 
   
-<img width="549" height="83" alt="Disclaimer2026" src="https://github.com/user-attachments/assets/7b2cc2d9-fe1b-4d1b-a0c5-dfd54145754d" />
+<img width="549" height="83" alt="Disclaimer2026" src="https://github.com/user-attachments/assets/1a738f54-f04a-45ca-b08e-d15ba341572a" />
+
 
 
 
