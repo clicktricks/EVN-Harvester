@@ -61,7 +61,7 @@ How to use the extension:
 
 <img width="1901" height="848" alt="screen02" src="https://github.com/user-attachments/assets/5672bf71-2d48-466b-8b9a-f7de1636bef7" />
 
-<img width="180" height="45" alt="disc" src="https://github.com/user-attachments/assets/dfd3f22d-5bca-47c5-96b2-63cd80538786" />
+<img width="250" height="38" alt="disclaimer" src="https://github.com/user-attachments/assets/ffc85ecb-c380-40bf-b2a5-386580fa7f8c" />
 
 
 
