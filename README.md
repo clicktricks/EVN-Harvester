@@ -52,7 +52,7 @@ How to use the extension:
 <img width="1917" height="411" alt="screen03" src="https://github.com/user-attachments/assets/b8df3df2-e0f2-4276-8657-17f97065ba6f" />
 
 
-<img width="750" height="188" alt="disc" src="https://github.com/user-attachments/assets/24e764cd-360d-4682-bba3-cc19ca6fe652" />
+
 
 
 
@@ -60,5 +60,8 @@ How to use the extension:
 
 
 <img width="1901" height="848" alt="screen02" src="https://github.com/user-attachments/assets/5672bf71-2d48-466b-8b9a-f7de1636bef7" />
+
+<img width="180" height="45" alt="disc" src="https://github.com/user-attachments/assets/dfd3f22d-5bca-47c5-96b2-63cd80538786" />
+
 
 
